@@ -3,7 +3,7 @@
     tasks:
       - name: install web components
         apt: name:={{item}} state=present update_cache=yes
-        with_item:
+        with_items:
           - apache2
           - python-pip
           - python-virtualenv
