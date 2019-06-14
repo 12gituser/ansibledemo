@@ -1,6 +1,5 @@
 ---
   - hosts: control
-    become_user: yes
     tasks:
       - name: install tools
         apt: name{{item}} state=present update_cache=yes
