@@ -1,0 +1,6 @@
+---
+  - hosts: loadbalancer
+    become: true
+    tasks:
+      - name: install nginx
+        apt: name=nginx state=persent update_cache=yes
