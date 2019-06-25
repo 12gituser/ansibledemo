@@ -1,43 +1,18 @@
 ---
    - hosts: nodejs-yarn
      tasks:
-    - name: install tools
-        apt: name{{item}} state=present update_cache=yes
-        with_items:
-          - curl
+       - name: install tools
+         apt: name{{item}} state=present update_cache=yes
+         with_items:
+             - curl
 
-    - name: Install "imagemin" node.js package.
-      yarn:
-        name: imagemin
-       path: /app/location
+       - name: Configure the Yarn APT key
+         apt_key: url=https://dl.yarnpkg.com/debian/pubkey.gpg
 
-    - name: Install "imagemin" node.js package on version 5.3.1
-      yarn:
-        name: imagemin
-        version: '5.3.1'
-        path: /app/location
+       - name: Add Yarn repository
+         apt_repository:
+        repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
+        state: present
 
-    - name: Install "imagemin" node.js package globally.
-      yarn:
-        name: imagemin
-        global: yes
-
-   - name: Remove the globally-installed package "imagemin".
-     yarn:
-       name: imagemin
-       global: yes
-       state: absent
-
-   - name: Install "imagemin" node.js package from custom registry.
-     yarn:
-       name: imagemin
-       registry: 'http://registry.mysite.com'
-
-  - name: Install packages based on package.json.
-    yarn:
-      path: /app/location
-
-  - name: Update all packages in package.json to their latest version.
-    yarn:
-      path: /app/location
-      state: latest
+       - name: Install Yarn
+         apt: pkg=yarn={{ yarn_version }} state=present
